@@ -1,10 +1,11 @@
-export PATH := $(PATH):/usr/lib/go-1.16/bin
-PACKAGE = metadata
+.DEFAULT_GOAL := build
 
-all: build
+lint:
+	vendor/bin/phpstan analyse -c phpstan.neon
+	vendor/bin/php-cs-fixer fix
 
-build:
-	go build -o metadata
+build: lint
+	docker build --no-cache .
 
-format:
-	gofmt -w *.go
+publish: lint
+	docker build --no-cache --push --tag compwright/docker-ec2-metadata:latest .

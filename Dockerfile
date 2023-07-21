@@ -1,11 +1,12 @@
-FROM debian:bullseye-backports
+FROM ubuntu AS test
+RUN apt-get update && apt-get install -y curl
 
-RUN apt-get update && apt-get install -y golang-1.16-go make git docker.io dnsutils net-tools dnsutils
-
-RUN mkdir /opt/metadata
-COPY Makefile metadata_wrapper_linux.sh /opt/metadata/
-WORKDIR /opt/metadata
-
-COPY main.go go.mod go.sum /opt/metadata/
-
-RUN make build && cp metadata /usr/bin/
+FROM php:8.2-alpine
+RUN apk add --no-cache docker-cli
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+ENV COMPOSER_ALLOW_SUPERUSER 1
+WORKDIR /opt/docker-ec2-metadata
+COPY . .
+RUN composer install --no-scripts --no-autoloader --prefer-dist --quiet \
+    && rm -rf .composer/cache
+ENTRYPOINT ["/opt/docker-ec2-metadata/bin/docker-ec2-metadata", "-p", "80", "-vvv"]
