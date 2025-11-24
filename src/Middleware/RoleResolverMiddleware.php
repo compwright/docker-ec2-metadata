@@ -13,17 +13,11 @@ use Throwable;
 
 class RoleResolverMiddleware implements MiddlewareInterface
 {
-    private ContainerFactory $containerFactory;
-
-    private LoggerInterface $logger;
-
-    private ?string $defaultRole = null;
-
-    public function __construct(ContainerFactory $containerFactory, LoggerInterface $logger, ?string $defaultRole = null)
-    {
-        $this->containerFactory = $containerFactory;
-        $this->logger = $logger;
-        $this->defaultRole = $defaultRole;
+    public function __construct(
+        private ContainerFactory $containerFactory,
+        private LoggerInterface $logger,
+        private ?string $defaultRole = null
+    ) {
     }
 
     /**

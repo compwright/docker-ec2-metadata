@@ -10,14 +10,11 @@ use RuntimeException;
 
 class ServerFactory
 {
-    private ConfigurationResolver $configResolver;
-
-    public function __construct(ConfigurationResolver $configResolver)
+    public function __construct(private ConfigurationResolver $configResolver)
     {
-        $this->configResolver = $configResolver;
     }
 
-    public function new(LoggerInterface $logger, string $defaultRole = null): HttpServer
+    public function new(LoggerInterface $logger, ?string $defaultRole = null): HttpServer
     {
         $region = $this->configResolver->resolve('region');
 

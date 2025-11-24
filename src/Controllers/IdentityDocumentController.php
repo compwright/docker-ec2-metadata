@@ -8,11 +8,8 @@ use React\Http\Message\Response;
 
 class IdentityDocumentController
 {
-    private string $region;
-
-    public function __construct(string $region)
+    public function __construct(private string $region)
     {
-        $this->region = $region;
     }
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface

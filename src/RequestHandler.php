@@ -8,11 +8,8 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class RequestHandler
 {
-    private Router $router;
-
-    public function __construct(Router $router)
+    public function __construct(private Router $router)
     {
-        $this->router = $router;
     }
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface

@@ -9,14 +9,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ServeCommand
 {
-    private ServerFactory $serverFactory;
-
-    public function __construct(ServerFactory $serverFactory)
+    public function __construct(private ServerFactory $serverFactory)
     {
-        $this->serverFactory = $serverFactory;
     }
 
-    public function __invoke(InputInterface $input, OutputInterface $output): void
+    public function __invoke(InputInterface $input, OutputInterface $output): int
     {
         $defaultRole = $input->hasArgument('defaultRole')
             ? $input->getArgument('defaultRole')
@@ -37,5 +34,7 @@ class ServeCommand
         $http->listen(
             new SocketServer($bind)
         );
+
+        return 0;
     }
 }

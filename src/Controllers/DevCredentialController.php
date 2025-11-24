@@ -11,14 +11,8 @@ use Throwable;
 
 class DevCredentialController
 {
-    private CredentialStore $credentialStore;
-
-    private LoggerInterface $logger;
-
-    public function __construct(CredentialStore $credentialStore, LoggerInterface $logger)
+    public function __construct(private CredentialStore $credentialStore, private LoggerInterface $logger)
     {
-        $this->credentialStore = $credentialStore;
-        $this->logger = $logger;
     }
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface

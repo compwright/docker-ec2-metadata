@@ -4,18 +4,11 @@ namespace Compwright\DockerEc2Metadata;
 
 class Container
 {
-    private string $name;
-
-    /** @var string[] */
-    private array $env;
-
     /**
      * @param string[] $env
      */
-    public function __construct(string $name, array $env = [])
+    public function __construct(private string $name, private array $env = [])
     {
-        $this->name = $name;
-        $this->env = $env;
     }
 
     public function getName(): string
