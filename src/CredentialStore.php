@@ -7,14 +7,11 @@ use Aws\Sts\StsClient;
 
 class CredentialStore
 {
-    private StsClient $stsClient;
-
     /** @var array<string, Credentials> */
     private array $credentials;
 
-    public function __construct(StsClient $stsClient)
+    public function __construct(private StsClient $stsClient)
     {
-        $this->stsClient = $stsClient;
     }
 
     public function getStsTokenJSON(string $name, string $arn): string

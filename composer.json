@@ -20,19 +20,25 @@
         }
     },
     "require": {
-        "aws/aws-sdk-php": "^3.276",
+        "php": "^8.4 || ^8.5",
+        "aws/aws-sdk-php": "^3.363",
         "composer-runtime-api": "^2.2",
-        "league/route": "^5.1",
-        "psr/log": "^1.1",
-        "react/http": "^1.9",
+        "league/route": "^6.2",
+        "psr/log": "^3.0",
+        "react/http": "dev-patch-1",
         "react/socket": "^1.13",
-        "symfony/console": "^5.4"
+        "symfony/console": "^7.3"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.22",
-        "phpstan/phpstan": "^1.10",
-        "phpunit/phpunit": "^9.6"
+        "friendsofphp/php-cs-fixer": "^3.89",
+        "phpstan/phpstan": "^2.1.32"
     },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/valzargaming/http/"
+        }
+    ],
     "bin": [
         "bin/docker-ec2-metadata"
     ]

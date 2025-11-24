@@ -1,10 +1,10 @@
 FROM ubuntu AS test
 RUN apt-get update && apt-get install -y curl
 
-FROM php:8.2-alpine
-RUN apk add --no-cache docker-cli
+FROM php:8.4-alpine
+RUN apk add --no-cache docker-cli git
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV COMPOSER_ALLOW_SUPERUSER=1
 WORKDIR /opt/docker-ec2-metadata
 COPY . .
 RUN composer install --no-scripts --no-autoloader --prefer-dist --quiet \
