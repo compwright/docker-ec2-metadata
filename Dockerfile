@@ -1,7 +1,7 @@
 FROM ubuntu AS test
 RUN apt-get update && apt-get install -y curl
 
-FROM php:8.4-alpine
+FROM php:8.5-alpine
 RUN apk add --no-cache docker-cli git
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
