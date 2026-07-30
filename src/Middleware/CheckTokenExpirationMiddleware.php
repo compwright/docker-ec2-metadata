@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Compwright\DockerEc2Metadata\Middleware;
 
 use Psr\Http\Message\ResponseInterface;

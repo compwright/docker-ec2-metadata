@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+declare(strict_types=1);
+
 use Compwright\DockerEc2Metadata\ConfigurationResolver;
 use Compwright\DockerEc2Metadata\ServeCommand;
 use Compwright\DockerEc2Metadata\ServerFactory;
