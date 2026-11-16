@@ -20,7 +20,8 @@ class ContainerFactory
         $shortname = explode('.', $name)[0];
         $containerName = sprintf("/%s", $shortname);
 
-        $inspectCommand = sprintf('docker inspect -f json %s', escapeshellarg($containerName));
+        // Array form bypasses /bin/sh, which the hardened runtime image does not ship
+        $inspectCommand = ['docker', 'inspect', '-f', 'json', $containerName];
 
         try {
             $raw = $this->executeSystemCommand($inspectCommand);
@@ -36,7 +37,10 @@ class ContainerFactory
         return new Container($shortname, $data->Config->Env);
     }
 
-    private function executeSystemCommand(string $command): string
+    /**
+     * @param list<string> $command
+     */
+    private function executeSystemCommand(array $command): string
     {
         $descriptorspec = [
             0 => ['pipe', 'r'], // STDIN
@@ -56,6 +60,6 @@ class ContainerFactory
             throw new RuntimeException($stderr ?: 'Exit code ' . $return_value, $return_value);
         }
 
-        throw new RuntimeException('Could not execute command: ' . $command);
+        throw new RuntimeException('Could not execute command: ' . implode(' ', $command));
     }
 }

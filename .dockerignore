@@ -1,9 +1,0 @@
-.cache
-.env
-.gitignore
-.php-cs-fixer.php
-composer.lock
-docker-compose.yml
-Dockerfile
-Makefile
-phpstan.neon
