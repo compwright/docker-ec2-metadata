@@ -28,10 +28,16 @@ The following settings are required for proper operation of the metadata service
 Host                 | Container            | Required?
 ---------------------|----------------------|------------
 /var/run/docker.sock | /var/run/docker.sock | Required
-~/.aws               | /root/.aws           | Recommended
+~/.aws               | /home/nonroot/.aws   | Recommended
 
 The docker.sock volume enables the metadata service container to inspect the environment of calling service containers,
 to determine the IAM role ARN to assume for each container.
+
+The image runs as the unprivileged `nonroot` user (UID 65532), so the container must be added to the group that owns
+`docker.sock` on your host (usually `0`/`root`, or `docker` on Linux) to be able to read it:
+
+    group_add:
+      - '0'
 
 ### Networks
 
@@ -132,7 +138,7 @@ To test that it works:
 
     ```
     $ echo "AWS_PROFILE=my_app" >> .env
-    $ echo "IAM_ROLE=arn:aws:iam::114047350549:role/tys-ec2-staging" >> .env
+    $ echo "IAM_ROLE=arn:aws:iam::<id>:role/<role>" >> .env
     ```
 
 3. Create the external dedicated metadata network:
@@ -141,28 +147,22 @@ To test that it works:
     $ docker network create -d bridge --subnet 169.254.169.0/24 ec2_metadata
     ```
 
-4. Build the docker images:
+4. Run the test:
 
     ```
-    $ docker-compose build
-    ```
-
-5. Start the service:
-
-    ```
-    $ docker-compose up
+    $ make test
     ```
 
 You should see output like the following:
 
 ```
-docker-ec2-metadata-metadata-1  | [notice] Listening on 169.254.169.254:80
-docker-ec2-metadata-metadata-1  | [notice] GET: /latest/meta-data/iam/security-credentials/dev (from 169.254.169.2) (container=docker-ec2-metadata-test_app-1 / role=arn:aws:iam::114047350549:role/tys-ec2-staging) (curl/7.81.0)
-docker-ec2-metadata-test_app-1  | {"AccessKeyId":"ASIA...","SecretAccessKey":"...","Token":"...","Code":"Success","Type":"AWS-HMAC","Expiration":"2023-08-03T17:39:55+00:00","LastUpdated":"2023-08-03T16:39:55+00:00"}
-docker-ec2-metadata-test_app-1 exited with code 0
+Attaching to test_app-1
+test_app-1  |   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+test_app-1  |                                  Dload  Upload  Total   Spent   Left   Speed
+100   1014 100   1014   0      0   6193      0                              0
+test_app-1  | {"AccessKeyId":"...","SecretAccessKey":"...","Token":"...","Code":"Success","Type":"AWS-HMAC","Expiration":"...","LastUpdated":"..."}
+test_app-1 exited with code 0
 ```
-
-At this point, you can press CTRL+C to exit and shut down the metadata service.
 
 ## License
 

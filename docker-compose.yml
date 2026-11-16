@@ -1,9 +1,12 @@
 services:
   metadata:
     build: .
+    # The image runs as nonroot (65532); docker.sock is root:root 0660
+    group_add:
+      - '0'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ~/.aws:/root/.aws
+      - ~/.aws:/home/nonroot/.aws:ro
     env_file:
       - .env
     networks:

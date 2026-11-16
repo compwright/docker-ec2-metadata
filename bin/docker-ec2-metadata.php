@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 
 declare(strict_types=1);
@@ -11,7 +10,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\SingleCommandApplication;
 
 if (isset($_composer_autoload_path)) {
-    include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
+    include $_composer_autoload_path;
 } else {
     require dirname(__DIR__) . '/vendor/autoload.php';
 }

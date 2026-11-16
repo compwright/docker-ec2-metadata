@@ -9,3 +9,10 @@ build: lint
 
 publish: lint
 	docker build --platform linux/x86_64,linux/amd64,linux/arm64/v8 --no-cache --push --tag compwright/docker-ec2-metadata:latest .
+
+test:
+	docker compose rm -f
+	docker compose build
+	docker compose up --detach metadata
+	docker compose up test_app
+	docker compose stop
