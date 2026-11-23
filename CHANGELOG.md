@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/compwright/docker-ec2-metadata/compare/v1.0.1...v1.0.2) (2026-11-23)
+
+
+### Bug Fixes
+
+* **ci:** Fix auto publish release ([6454cbd](https://github.com/compwright/docker-ec2-metadata/commit/6454cbd64f46f68133acf0ef1d241d7f08773229))
+
 ## [1.0.1](https://github.com/compwright/docker-ec2-metadata/compare/v1.0.0...v1.0.1) (2026-11-23)
 
 
