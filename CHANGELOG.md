@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/compwright/docker-ec2-metadata/compare/v1.0.0...v1.0.1) (2026-11-23)
+
+
+### Miscellaneous Chores
+
+* fix Docker Hub tags ([692ae0d](https://github.com/compwright/docker-ec2-metadata/commit/692ae0d174d59c28d09ab7762e9cdeab4fade7f4))
+
 ## 1.0.0 (2026-11-23)
 
 
