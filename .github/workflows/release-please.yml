@@ -1,4 +1,4 @@
-name: Release Please
+name: Release then Publish
 
 on:
   push:
@@ -13,8 +13,34 @@ permissions:
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
       - uses: googleapis/release-please-action@v5
+        id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: php
+  docker:
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
+    uses: docker/github-builder/.github/workflows/build.yml@v1
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+    with:
+      output: image
+      push: true
+      platforms: linux/amd64,linux/arm64/v8
+      meta-images: compwright/docker-ec2-metadata
+      meta-tags: |
+        type=semver,pattern={{version}},value=${{ needs.release-please.outputs.tag_name }}
+        type=semver,pattern={{major}}.{{minor}},value=${{ needs.release-please.outputs.tag_name }}
+        type=semver,pattern={{major}},value=${{ needs.release-please.outputs.tag_name }}
+    secrets:
+      registry-auths: |
+        - registry: docker.io
+          username: compwright
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
